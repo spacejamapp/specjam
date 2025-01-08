@@ -7,5 +7,9 @@ mod codegen;
 
 fn main() -> Result<()> {
     println!("cargo:rerun-if-changed=jamtestvectors");
-    Codegen::run()
+    Codegen::run()?;
+    if std::env::var("CLEAN_VECTORS").is_ok() {
+        std::fs::remove_dir_all("jamtestvectors")?;
+    }
+    Ok(())
 }

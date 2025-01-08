@@ -1,14 +1,12 @@
 //! The specjam library
 
+use clap::ValueEnum;
+use colored::{ColoredString, Colorize};
 use std::fmt::Display;
-pub use {
-    cli::App,
-    runner::{BinaryRunner, Runner},
-    section::Section,
-};
+pub use {cli::App, runner::Runner, section::Section};
 
 mod cli;
-mod runner;
+pub mod runner;
 mod section;
 
 /// A general test vector
@@ -29,7 +27,7 @@ pub struct Test {
 }
 
 /// The scale of the test vectors
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, ValueEnum)]
 pub enum Scale {
     /// The test vectors are small
     Tiny,
@@ -48,13 +46,23 @@ impl AsRef<str> for Scale {
 
 impl Display for Test {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut path: Vec<String> = vec![];
+        let mut path: Vec<ColoredString> = vec![];
         if let Some(scale) = self.scale {
-            path.push(scale.as_ref().to_string());
+            path.push(scale.as_ref().to_string().bright_cyan());
         }
-        path.push(self.section.to_string());
-        path.push(self.name.to_string());
-        write!(f, "{}", path.join("::"))
+        path.push(self.section.to_string().bright_purple().bold());
+        path.push(self.name.to_string().blue().bold());
+
+        let len = path.len();
+        let mut msg = String::new();
+        for (i, patt) in path.into_iter().enumerate() {
+            msg.push_str(&format!(
+                "{}{}",
+                patt,
+                if i == len - 1 { "" } else { "::" }.dimmed()
+            ));
+        }
+        write!(f, "{}", msg)
     }
 }
 

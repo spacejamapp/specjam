@@ -61,9 +61,12 @@ impl<'s> Registry<'s> {
         self.trie()?;
 
         // impl the registry
+        let all = self.extract_all_tests();
         let tests = self.tests;
         let items = self.registry;
         let registry = quote::quote! {
+            #all
+
             #(#items)*
 
             #tests
@@ -75,6 +78,25 @@ impl<'s> Registry<'s> {
         Ok(())
     }
 
+    /// Extract all tests from the registry
+    fn extract_all_tests(&self) -> syn::Item {
+        let mut tests = Vec::new();
+        for item in &self.registry {
+            if let syn::Item::Const(syn::ItemConst { expr, .. }) = item {
+                if let syn::Expr::Array(syn::ExprArray { elems, .. }) = *expr.clone() {
+                    tests.extend(elems.into_iter())
+                }
+            }
+        }
+
+        let len = tests.len();
+        let len: Expr = parse_quote!(#len);
+        parse_quote! {
+            #[doc = "The all test vectors"]
+            pub const ALL_TESTS: [crate::Test; #len] = [#(#tests),*];
+        }
+    }
+
     /// Generate the scale test vectors
     fn scale(&mut self) -> Result<()> {
         for section in SCALE_SECTIONS {
@@ -82,7 +104,7 @@ impl<'s> Registry<'s> {
             let mut tests = Vec::new();
             for scale in ["tiny", "full"] {
                 let path = path.join(scale);
-                let dir = fs::read_dir(&path).expect(&format!("{path:?}"));
+                let dir = fs::read_dir(&path)?;
                 tests.extend(self.process_base(section, dir, Some(scale.to_string()))?);
             }
             self.embed_namespace(section, tests);
@@ -293,7 +315,7 @@ where
     );
 
     // read the json file
-    let json: Value = serde_json::from_slice(&fs::read(&file)?)
+    let json: Value = serde_json::from_slice(&fs::read(file)?)
         .map_err(|e| anyhow::anyhow!("invalid json {file:?} : {e}"))?;
     let (input, output) = parse(json)?;
 

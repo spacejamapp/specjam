@@ -48,6 +48,20 @@ OPTIONS:
   --input <input> The file path of the input JSON
 ```
 
+The stdout of the binary runner must be a valid JSON which matches the following schema:
+
+```json
+{
+  "output": {
+    "output": "...",
+    "post_state": "..."
+  }
+}
+```
+
+There are different schema for `codec`, `pvm`, `trie` and `shuffle`. you can check out the schema
+with `specjam input <section> <name>` and `specjam output <section> <name>`.
+
 # LICENSE
 
 GPL-3.0

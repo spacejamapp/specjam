@@ -9,6 +9,9 @@ fn main() -> anyhow::Result<()> {
 
     // Initialize the tracing subscriber
     tracing_subscriber::fmt()
+        .without_time()
+        .with_target(false)
+        .with_level(false)
         .with_max_level(match app.verbose {
             0 => LevelFilter::INFO,
             1 => LevelFilter::DEBUG,
@@ -16,5 +19,5 @@ fn main() -> anyhow::Result<()> {
         })
         .init();
 
-    Ok(())
+    app.command.run()
 }

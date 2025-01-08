@@ -1,5 +1,6 @@
 //! The section of the test vectors
 
+use crate::{registry, Test};
 use clap::ValueEnum;
 use std::{fmt::Display, str::FromStr};
 
@@ -10,8 +11,6 @@ pub enum Section {
     Assurances,
     /// The codec section
     Codec,
-    /// The erasure coding section
-    ErasureCoding,
     /// The pvm section
     Pvm,
     /// The safrole section
@@ -34,11 +33,10 @@ pub enum Section {
 
 impl Section {
     /// The all sections
-    pub fn all() -> [Section; 12] {
+    pub fn all() -> [Section; 11] {
         [
             Section::Assurances,
             Section::Codec,
-            Section::ErasureCoding,
             Section::Pvm,
             Section::Safrole,
             Section::Statistics,
@@ -50,6 +48,23 @@ impl Section {
             Section::Trie,
         ]
     }
+
+    /// The tests in the section
+    pub fn tests(&self) -> &[Test] {
+        match self {
+            Section::Assurances => &registry::ASSURANCES,
+            Section::Codec => &registry::CODEC,
+            Section::Pvm => &registry::PVM,
+            Section::Safrole => &registry::SAFROLE,
+            Section::Statistics => &registry::STATISTICS,
+            Section::Authorizations => &registry::AUTHORIZATIONS,
+            Section::Disputes => &registry::DISPUTES,
+            Section::History => &registry::HISTORY,
+            Section::Preimages => &registry::PREIMAGES,
+            Section::Reports => &registry::REPORTS,
+            Section::Trie => &registry::TRIE,
+        }
+    }
 }
 
 impl FromStr for Section {
@@ -59,7 +74,6 @@ impl FromStr for Section {
         match s {
             "assurances" => Ok(Section::Assurances),
             "codec" => Ok(Section::Codec),
-            "erasure_coding" => Ok(Section::ErasureCoding),
             "pvm" => Ok(Section::Pvm),
             "safrole" => Ok(Section::Safrole),
             "statistics" => Ok(Section::Statistics),
@@ -79,7 +93,6 @@ impl AsRef<str> for Section {
         match self {
             Section::Assurances => "assurances",
             Section::Codec => "codec",
-            Section::ErasureCoding => "erasure_coding",
             Section::Pvm => "pvm",
             Section::Safrole => "safrole",
             Section::Statistics => "statistics",

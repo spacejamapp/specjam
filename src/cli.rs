@@ -1,8 +1,15 @@
 //! The command line interface of specjam
 
-use crate::Section;
+use crate::{
+    runner::{BinaryRunner, DummyRunner},
+    Runner, Scale, Section,
+};
 use clap::{ArgAction, Parser, Subcommand};
+use serde_json::Value;
 use std::path::PathBuf;
+
+/// The head hash of the test vectors
+const HEAD: &str = include_str!(concat!(env!("OUT_DIR"), "/head.txt"));
 
 /// The JAM spec test engine developed by spacejam
 #[derive(Debug, Parser)]
@@ -15,14 +22,14 @@ pub struct App {
 
     /// The command of the specjam
     #[clap(subcommand)]
-    command: Option<Command>,
+    pub command: Command,
 }
 
 /// The available commands for the specjam CLI
 #[derive(Debug, Subcommand)]
 pub enum Command {
     /// Try out the dummy test runner
-    Dummy,
+    Dummy(SpawnOptions),
     /// Print the input of a test
     Input {
         /// The section of the test to run
@@ -59,7 +66,98 @@ pub enum Command {
     Spawn {
         /// The path to the binary
         binary: PathBuf,
+        /// The options for the spawn command
+        #[clap(flatten)]
+        options: SpawnOptions,
     },
     /// Prints the version of the JAM spec.
     Spec,
+}
+
+impl Command {
+    /// Run the command
+    pub fn run(&self) -> anyhow::Result<()> {
+        match self {
+            Command::Dummy(options) => {
+                let runner = DummyRunner;
+                options.run(runner)?;
+                Ok(())
+            }
+            Command::Input { section, name } => {
+                let test = section
+                    .tests()
+                    .iter()
+                    .find(|t| t.name == name)
+                    .ok_or_else(|| anyhow::anyhow!("test {name} not found in {section}"))?;
+
+                let json = serde_json::from_str::<Value>(test.input)?;
+                println!("{}", serde_json::to_string_pretty(&json)?);
+                Ok(())
+            }
+            Command::List { section } => {
+                println!(
+                    "{:#?}",
+                    section.tests().iter().map(|t| t.name).collect::<Vec<_>>()
+                );
+                Ok(())
+            }
+            Command::Output { section, name } => {
+                let test = section
+                    .tests()
+                    .iter()
+                    .find(|t| t.name == name)
+                    .ok_or_else(|| anyhow::anyhow!("test {name} not found in {section}"))?;
+
+                let json = serde_json::from_str::<Value>(test.output)?;
+                println!("{}", serde_json::to_string_pretty(&json)?);
+                Ok(())
+            }
+            Command::Spawn { binary, options } => {
+                let runner = BinaryRunner::new(binary);
+                options.run(runner)?;
+                Ok(())
+            }
+            Command::Spec => {
+                println!(
+                    "https://github.com/spacejam-network/specjam/commit/{}",
+                    HEAD
+                );
+                Ok(())
+            }
+        }
+    }
+}
+
+/// The options for the spawn command
+#[derive(Debug, Clone, Parser)]
+pub struct SpawnOptions {
+    /// The scale of the test vectors, if not provided, the runner
+    /// will process all scales
+    #[clap(short, long)]
+    pub scale: Option<Scale>,
+
+    /// The section of the test vectors, if provided, the runner
+    /// will only process the tests in the section
+    #[clap(long)]
+    pub section: Option<Section>,
+
+    /// The sections to skip
+    #[clap(long)]
+    pub skip: Vec<Section>,
+}
+
+impl SpawnOptions {
+    /// Run the tests
+    pub fn run<R: Runner>(&self, runner: R) -> anyhow::Result<()> {
+        let sections = if let Some(section) = self.section {
+            vec![section]
+        } else {
+            Section::all()
+                .into_iter()
+                .filter(|s| !self.skip.contains(s))
+                .collect()
+        };
+
+        runner.process(self.scale, &sections)
+    }
 }
