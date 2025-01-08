@@ -28,15 +28,13 @@ pub enum Section {
     Preimages,
     /// The reports section
     Reports,
-    /// The shuffle section
-    Shuffle,
     /// The trie section
     Trie,
 }
 
 impl Section {
     /// The all sections
-    pub fn all() -> [Section; 13] {
+    pub fn all() -> [Section; 12] {
         [
             Section::Assurances,
             Section::Codec,
@@ -49,7 +47,6 @@ impl Section {
             Section::History,
             Section::Preimages,
             Section::Reports,
-            Section::Shuffle,
             Section::Trie,
         ]
     }
@@ -71,7 +68,6 @@ impl FromStr for Section {
             "history" => Ok(Section::History),
             "preimages" => Ok(Section::Preimages),
             "reports" => Ok(Section::Reports),
-            "shuffle" => Ok(Section::Shuffle),
             "trie" => Ok(Section::Trie),
             _ => Err(anyhow::anyhow!("Invalid section {s}")),
         }
@@ -92,7 +88,6 @@ impl AsRef<str> for Section {
             Section::History => "history",
             Section::Preimages => "preimages",
             Section::Reports => "reports",
-            Section::Shuffle => "shuffle",
             Section::Trie => "trie",
         }
     }

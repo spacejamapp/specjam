@@ -1,8 +1,6 @@
 # Specjam
 
-A tool for testing the JAM spec developed by spacejam.
-
-It can <kbd>spawn</kbd> a [binary runner](#binary-runner) to test the JAM spec.
+A tool which can <kbd>spawn</kbd> [binary runner](#binary-runner) to test the JAM spec.
 
 ## Usage
 
