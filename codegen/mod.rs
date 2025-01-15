@@ -2,7 +2,11 @@
 
 use anyhow::Result;
 use registry::Registry;
-use std::{env, fs, path::PathBuf, process::Command};
+use std::{
+    env, fs,
+    path::{Path, PathBuf},
+    process::Command,
+};
 
 mod registry;
 
@@ -15,14 +19,16 @@ pub struct Codegen;
 impl Codegen {
     /// Run the code generator
     pub fn run() -> Result<()> {
-        Self::download()?;
-
         // get the root and output directories
-        let root = PathBuf::from(env::var("CARGO_MANIFEST_DIR")?).join(INTO);
         let output = PathBuf::from(env::var("OUT_DIR")?);
+        let root = output.join(INTO);
+        let target = output.join(INTO);
+
+        // download the test vectors
+        Self::download(&target)?;
 
         // write the head hash to the output directory
-        let head = Self::head()?;
+        let head = Self::head(&target)?;
         fs::write(output.join("head.txt"), head.trim())?;
 
         // generate the test vectors
@@ -30,20 +36,25 @@ impl Codegen {
     }
 
     /// Download the jam test vectors
-    pub fn download() -> Result<()> {
-        let into = PathBuf::from(INTO);
-        if into.exists() {
+    pub fn download(target: &Path) -> Result<()> {
+        if target.exists() {
             return Ok(());
         }
 
-        Command::new("git").args(["clone", REPO, INTO]).status()?;
+        Command::new("git")
+            .args([
+                "clone",
+                REPO,
+                target.to_str().expect("target is not a valid path"),
+            ])
+            .status()?;
         Ok(())
     }
 
-    fn head() -> Result<String> {
+    fn head(target: &Path) -> Result<String> {
         let hash = Command::new("git")
             .args(["rev-parse", "HEAD"])
-            .current_dir(INTO)
+            .current_dir(target)
             .output()?
             .stdout;
         Ok(String::from_utf8(hash)?)

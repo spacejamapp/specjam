@@ -1,6 +1,6 @@
 [package]
 name = "specjam"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2021"
 description = "A tool which can spawn a binary runner to test the JAM spec"
 license = "GPL-3.0"

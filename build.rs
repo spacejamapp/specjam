@@ -6,7 +6,7 @@ use codegen::Codegen;
 mod codegen;
 
 fn main() -> Result<()> {
-    println!("cargo:rerun-if-changed=jamtestvectors");
+    println!("cargo:rerun-if-changed=codegen");
     Codegen::run()?;
     if std::env::var("CLEAN_VECTORS").is_ok() {
         std::fs::remove_dir_all("jamtestvectors")?;

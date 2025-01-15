@@ -251,17 +251,14 @@ impl<'s> Registry<'s> {
 
             let test = self::wrap_test(tests, &scale, section, &path, |json| {
                 let input = serde_json::json!({
-                    "input": {
-                        "initial-regs": json["pre-state"],
-                    },
+                    "input": json["input"],
+                    "pre_state": json["pre_state"],
                 })
                 .to_string();
 
                 let output = serde_json::json!({
-                    "output": {
-                        "output": json["output"],
-                        "post-state": json["post-state"],
-                    }
+                    "output": json["output"],
+                    "post_state": json["post_state"],
                 })
                 .to_string();
 
