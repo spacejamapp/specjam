@@ -58,6 +58,7 @@ impl<'s> Registry<'s> {
         self.general()?;
         self.codec()?;
         self.pvm()?;
+        self.shuffle()?;
         self.trie()?;
 
         // impl the registry
@@ -229,6 +230,46 @@ impl<'s> Registry<'s> {
         )?;
 
         self.embed_namespace("trie", vec![test]);
+        Ok(())
+    }
+
+    /// Generate the shuffle test vectors
+    fn shuffle(&mut self) -> Result<()> {
+        let file = self.root.join("shuffle").join("shuffle_tests.json");
+        let Some((_, tests)) = self.tests.content.as_mut() else {
+            return Err(anyhow::anyhow!("tests already initialized"));
+        };
+
+        let test = wrap_test(
+            tests,
+            &None,
+            "shuffle",
+            &file,
+            |json| -> Result<(String, String)> {
+                let vectors = json
+                    .as_array()
+                    .ok_or_else(|| anyhow::anyhow!("invalid shuffle test"))?;
+
+                let mut input = Vec::new();
+                let mut output = Vec::new();
+                for vector in vectors {
+                    input.push(serde_json::json!({
+                        "input": vector["input"],
+                        "entropy": vector["entropy"],
+                    }));
+                    output.push(serde_json::json!({
+                        "output": vector["output"],
+                    }));
+                }
+
+                Ok((
+                    serde_json::to_string(&input)?,
+                    serde_json::to_string(&output)?,
+                ))
+            },
+        )?;
+
+        self.embed_namespace("shuffle", vec![test]);
         Ok(())
     }
 
