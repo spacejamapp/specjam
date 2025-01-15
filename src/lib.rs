@@ -26,6 +26,13 @@ pub struct Test {
     pub output: &'static str,
 }
 
+impl Test {
+    /// Whether the test vector is full
+    pub fn is_full(&self) -> bool {
+        self.scale == Some(Scale::Full)
+    }
+}
+
 /// The scale of the test vectors
 #[derive(Debug, Clone, Copy, PartialEq, Eq, ValueEnum)]
 pub enum Scale {

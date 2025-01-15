@@ -162,25 +162,24 @@ impl<'s> Registry<'s> {
             let path = entry?.path();
             let test = self::wrap_test(tests, &None, section, &path, |json| {
                 let input = serde_json::json!({
-                    "input": {
-                        "initial-regs": json["pre-state"],
-                        "initial-pc": json["initial-pc"],
-                        "initial-page-map": json["initial-page-map"],
-                        "initial-memory": json["initial-memory"],
-                        "initial-gas": json["initial-gas"],
-                        "program": json["program"],
-                    },
+                    "name": json["name"],
+                    "initial-regs": json["pre-state"],
+                    "initial-pc": json["initial-pc"],
+                    "initial-regs": json["initial-regs"],
+                    "initial-page-map": json["initial-page-map"],
+                    "initial-memory": json["initial-memory"],
+                    "initial-gas": json["initial-gas"],
+                    "program": json["program"],
+
                 })
                 .to_string();
 
                 let output = serde_json::json!({
-                    "output": {
-                        "expected-status": json["expected-status"],
-                        "expected-regs": json["expected-regs"],
-                        "expected-pc": json["expected-pc"],
-                        "expected-memory": json["expected-memory"],
-                        "expected-gas": json["expected-gas"],
-                    }
+                    "expected-status": json["expected-status"],
+                    "expected-regs": json["expected-regs"],
+                    "expected-pc": json["expected-pc"],
+                    "expected-memory": json["expected-memory"],
+                    "expected-gas": json["expected-gas"],
                 })
                 .to_string();
 
