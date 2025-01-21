@@ -10,7 +10,7 @@ use std::{
 
 mod registry;
 
-const REPO: &str = "https://github.com/clearloop/jam-test-vectors.git";
+const REPO: &str = "https://github.com/spacejam-network/jam-test-vectors.git";
 const INTO: &str = "jamtestvectors";
 
 /// The code generator
@@ -46,6 +46,7 @@ impl Codegen {
                 "clone",
                 REPO,
                 target.to_str().expect("target is not a valid path"),
+                "--depth=1",
             ])
             .status()?;
         Ok(())

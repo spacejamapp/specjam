@@ -74,6 +74,7 @@ impl Display for Test {
 }
 
 pub mod registry {
+    #![allow(clippy::large_const_arrays)]
     //! The registry of the test vectors
     include!(concat!(env!("OUT_DIR"), "/registry.rs"));
 }
