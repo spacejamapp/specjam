@@ -29,7 +29,11 @@ fn main() {
     fs::write(head_path, head).expect("failed to write head hash");
 
     // run rustfmt if exists
-    if let Err(e) = Command::new("rustfmt").arg("src").status() {
+
+    if let Err(e) = Command::new("rustfmt")
+        .arg(workspace.join("src/registry.rs"))
+        .status()
+    {
         eprintln!("rustfmt check failed: {}", e);
     }
 

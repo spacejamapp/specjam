@@ -8,6 +8,7 @@ pub use {cli::App, runner::Runner, section::Section};
 mod cli;
 /// Registry of the test vectors
 #[allow(clippy::all)]
+#[rustfmt::skip]
 pub mod registry;
 pub mod runner;
 mod section;
