@@ -7,6 +7,7 @@ license.workspace = true
 documentation.workspace = true
 repository.workspace = true
 homepage.workspace = true
+include = ["src", "head.txt", "README.md", "build.rs"]
 
 [dependencies]
 anyhow = "1.0.95"
@@ -23,9 +24,6 @@ codegen.workspace = true
 default = ["tiny"]
 tiny = ["codegen/tiny"]
 full = ["codegen/full"]
-
-
-# workspace manifest
 
 [workspace]
 members = ["codegen"]

@@ -5,9 +5,14 @@ A tool which can <kbd>spawn</kbd> [binary runner](#binary-runner) to test the JA
 ## Usage
 
 ```bash
-# Install specjam from crates.io
+# for installing specjam without full test vectors, you can just install it from crates.io.
 cargo install specjam
 
+# for installing specjam with full test vectors
+JAM_TEST_VECTORS=/path/to/jamtestvectors cargo install specjam --features full
+```
+
+```bash
 # Spawn a binary runner
 specjam spawn <my-binary>
 ```
