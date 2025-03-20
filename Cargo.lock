@@ -266,8 +266,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3c5e1a9a646d36c3599cd173a41282daf47c44583ad367b8e6837255952e5c67"
 
 [[package]]
-name = "spacejam-codegen"
-version = "0.0.5"
+name = "specjam"
+version = "0.0.6"
+dependencies = [
+ "anyhow",
+ "clap",
+ "colored",
+ "serde_json",
+ "specjam-codegen",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "specjam-codegen"
+version = "0.0.6"
 dependencies = [
  "anyhow",
  "heck",
@@ -277,19 +290,6 @@ dependencies = [
  "quote",
  "serde_json",
  "syn",
-]
-
-[[package]]
-name = "specjam"
-version = "0.0.5"
-dependencies = [
- "anyhow",
- "clap",
- "colored",
- "serde_json",
- "spacejam-codegen",
- "tracing",
- "tracing-subscriber",
 ]
 
 [[package]]

@@ -31,7 +31,7 @@ full = ["codegen/full"]
 members = ["codegen"]
 
 [workspace.package]
-version = "0.0.5"
+version = "0.0.6"
 edition = "2021"
 description = "A tool spawns binary runner for testing the JAM spec"
 license = "GPL-3.0"
@@ -40,4 +40,4 @@ repository = "https://github.com/spacejamapp/specjam"
 homepage = "https://github.com/spacejamapp/specjam"
 
 [workspace.dependencies]
-codegen = { path = "codegen", package = "spacejam-codegen" }
+codegen = { path = "codegen", package = "specjam-codegen", version = "0.0.6" }

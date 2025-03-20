@@ -6,7 +6,7 @@ use std::fmt::Display;
 pub use {cli::App, runner::Runner, section::Section};
 
 mod cli;
-#[allow(clippy::large_const_arrays)]
+#[allow(clippy::all)]
 pub mod registry;
 pub mod runner;
 mod section;
