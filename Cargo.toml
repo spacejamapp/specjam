@@ -1,13 +1,12 @@
 [package]
 name = "specjam"
-version = "0.0.5"
-edition = "2021"
-description = "A tool which can spawn a binary runner to test the JAM spec"
-license = "GPL-3.0"
-documentation = "https://docs.rs/specjam"
-repository = "https://github.com/spacejam-network/specjam"
-homepage = "https://github.com/spacejam-network/specjam"
-exclude = ["jamtestvectors"]
+version.workspace = true
+edition.workspace = true
+description.workspace = true
+license.workspace = true
+documentation.workspace = true
+repository.workspace = true
+homepage.workspace = true
 
 [dependencies]
 anyhow = "1.0.95"
@@ -18,11 +17,27 @@ tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 
 [build-dependencies]
-anyhow = "1.0.95"
-heck = "0.5.0"
-hex = "0.4.3"
-paste = "1.0.15"
-proc-macro2 = "1.0.92"
-quote = "1.0.38"
-serde_json = "1.0.135"
-syn = "2.0.95"
+codegen.workspace = true
+
+[features]
+default = ["tiny"]
+tiny = ["codegen/tiny"]
+full = ["codegen/full"]
+
+
+# workspace manifest
+
+[workspace]
+members = ["codegen"]
+
+[workspace.package]
+version = "0.0.5"
+edition = "2021"
+description = "A tool spawns binary runner for testing the JAM spec"
+license = "GPL-3.0"
+documentation = "https://docs.rs/specjam"
+repository = "https://github.com/spacejamapp/specjam"
+homepage = "https://github.com/spacejamapp/specjam"
+
+[workspace.dependencies]
+codegen = { path = "codegen", package = "spacejam-codegen" }

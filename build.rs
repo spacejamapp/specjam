@@ -1,15 +1,30 @@
 //! Build script for specjam
 
-use anyhow::Result;
-use codegen::Codegen;
+use std::{fs, path::PathBuf};
 
-mod codegen;
-
-fn main() -> Result<()> {
+fn main() {
     println!("cargo:rerun-if-changed=codegen");
-    Codegen::run()?;
-    if std::env::var("CLEAN_VECTORS").is_ok() {
-        std::fs::remove_dir_all("jamtestvectors")?;
+    println!("cargo:rerun-if-changed=jamtestvectors");
+    let workspace =
+        PathBuf::from(&std::env::var("CARGO_MANIFEST_DIR").expect("failed to get workspace"));
+    let vectors = workspace.join("jamtestvectors");
+    if !vectors.exists() {
+        println!("cargo:warning=jamtestvectors not found, skipping");
+        return;
     }
-    Ok(())
+
+    // write the head hash to the output file
+    let head = codegen::head(&vectors).expect("failed to get head hash");
+    let head_path = workspace.join("head.txt");
+    if !head_path.exists() {
+        fs::File::create(&head_path).expect("failed to create head file");
+    }
+
+    fs::write(head_path, head).expect("failed to write head hash");
+
+    // run the codegen
+    let registry = workspace.join("src");
+    if let Err(e) = codegen::run(&vectors, &registry) {
+        eprintln!("failed to run codegen: {}", e);
+    }
 }
