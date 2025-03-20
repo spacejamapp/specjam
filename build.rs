@@ -1,6 +1,6 @@
 //! Build script for specjam
 
-use std::{fs, path::PathBuf};
+use std::{fs, path::PathBuf, process::Command};
 
 const VECTORS: &str = "JAM_TEST_VECTORS";
 
@@ -27,6 +27,11 @@ fn main() {
     }
 
     fs::write(head_path, head).expect("failed to write head hash");
+
+    // run rustfmt if exists
+    if let Err(e) = Command::new("rustfmt").arg("src").status() {
+        eprintln!("rustfmt check failed: {}", e);
+    }
 
     // run the codegen
     let registry = workspace.join("src");
