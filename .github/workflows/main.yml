@@ -19,6 +19,9 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - uses: taiki-e/install-action@nextest
 
+      - name: Install jamtestvectors
+        run: git clone https://github.com/spacejamapp/jam-test-vectors --depth=1 jamtestvectors
+
       - name: Build the Binary
         run: cargo build --release
 
@@ -30,6 +33,9 @@ jobs:
       - uses: arduino/setup-protoc@v3
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
+      - name: Install jamtestvectors
+        run: git clone https://github.com/spacejamapp/jam-test-vectors --depth=1 jamtestvectors
+
       - name: Format
         run: cargo fmt --check
       - name: Clippy
