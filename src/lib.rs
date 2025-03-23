@@ -6,6 +6,10 @@ use std::fmt::Display;
 pub use {cli::App, runner::Runner, section::Section};
 
 mod cli;
+/// Registry of the test vectors
+#[allow(clippy::all)]
+#[rustfmt::skip]
+pub mod registry;
 pub mod runner;
 mod section;
 
@@ -71,10 +75,4 @@ impl Display for Test {
         }
         write!(f, "{}", msg)
     }
-}
-
-pub mod registry {
-    #![allow(clippy::large_const_arrays)]
-    //! The registry of the test vectors
-    include!(concat!(env!("OUT_DIR"), "/registry.rs"));
 }

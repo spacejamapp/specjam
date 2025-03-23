@@ -9,7 +9,7 @@ use serde_json::Value;
 use std::path::PathBuf;
 
 /// The head hash of the test vectors
-const HEAD: &str = include_str!(concat!(env!("OUT_DIR"), "/head.txt"));
+const HEAD: &str = include_str!("../head.txt");
 
 /// The JAM spec test engine developed by spacejam
 #[derive(Debug, Parser)]

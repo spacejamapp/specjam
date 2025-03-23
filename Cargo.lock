@@ -267,11 +267,24 @@ checksum = "3c5e1a9a646d36c3599cd173a41282daf47c44583ad367b8e6837255952e5c67"
 
 [[package]]
 name = "specjam"
-version = "0.0.5"
+version = "0.0.7"
 dependencies = [
  "anyhow",
  "clap",
  "colored",
+ "serde_json",
+ "specjam-codegen 0.0.6",
+ "tracing",
+ "tracing-subscriber",
+]
+
+[[package]]
+name = "specjam-codegen"
+version = "0.0.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5b1ab5e863ec6936c90a555123a07366e8fc9a2037f8907dd96a9d16ae7dadd3"
+dependencies = [
+ "anyhow",
  "heck",
  "hex",
  "paste",
@@ -279,8 +292,20 @@ dependencies = [
  "quote",
  "serde_json",
  "syn",
- "tracing",
- "tracing-subscriber",
+]
+
+[[package]]
+name = "specjam-codegen"
+version = "0.0.7"
+dependencies = [
+ "anyhow",
+ "heck",
+ "hex",
+ "paste",
+ "proc-macro2",
+ "quote",
+ "serde_json",
+ "syn",
 ]
 
 [[package]]

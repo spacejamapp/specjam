@@ -103,7 +103,7 @@ impl<'s> Registry<'s> {
         for section in SCALE_SECTIONS {
             let path = self.root.join(section);
             let mut tests = Vec::new();
-            for scale in ["tiny", "full"] {
+            for scale in crate::SCALE {
                 let path = path.join(scale);
                 let dir = fs::read_dir(&path)?;
                 tests.extend(self.process_base(section, dir, Some(scale.to_string()))?);
