@@ -273,25 +273,9 @@ dependencies = [
  "clap",
  "colored",
  "serde_json",
- "specjam-codegen 0.0.6",
+ "specjam-codegen",
  "tracing",
  "tracing-subscriber",
-]
-
-[[package]]
-name = "specjam-codegen"
-version = "0.0.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5b1ab5e863ec6936c90a555123a07366e8fc9a2037f8907dd96a9d16ae7dadd3"
-dependencies = [
- "anyhow",
- "heck",
- "hex",
- "paste",
- "proc-macro2",
- "quote",
- "serde_json",
- "syn",
 ]
 
 [[package]]

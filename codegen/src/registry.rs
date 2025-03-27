@@ -11,7 +11,8 @@ use std::{
 use syn::{parse_quote, Expr, Ident, Item, ItemMod, LitStr};
 
 /// The scale sections which contains both tiny and large test vectors
-const SCALE_SECTIONS: [&str; 6] = [
+const SCALE_SECTIONS: [&str; 7] = [
+    "accumulate",
     "assurances",
     "authorizations",
     "disputes",

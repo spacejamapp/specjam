@@ -38,4 +38,4 @@ repository = "https://github.com/spacejamapp/specjam"
 homepage = "https://github.com/spacejamapp/specjam"
 
 [workspace.dependencies]
-codegen = { package = "specjam-codegen", version = "0.0.6" }
+codegen = { package = "specjam-codegen", path = "codegen", version = "0.0.7" }
