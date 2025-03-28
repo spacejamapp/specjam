@@ -8,9 +8,6 @@ use clap::{ArgAction, Parser, Subcommand};
 use serde_json::Value;
 use std::path::PathBuf;
 
-/// The head hash of the test vectors
-const HEAD: &str = include_str!("../head.txt");
-
 /// The JAM spec test engine developed by spacejam
 #[derive(Debug, Parser)]
 #[clap(version, about, long_about = None)]
@@ -70,8 +67,6 @@ pub enum Command {
         #[clap(flatten)]
         options: SpawnOptions,
     },
-    /// Prints the version of the JAM spec.
-    Spec,
 }
 
 impl Command {
@@ -115,13 +110,6 @@ impl Command {
             Command::Spawn { binary, options } => {
                 let runner = BinaryRunner::new(binary);
                 options.run(runner)?;
-                Ok(())
-            }
-            Command::Spec => {
-                println!(
-                    "https://github.com/spacejam-network/specjam/commit/{}",
-                    HEAD
-                );
                 Ok(())
             }
         }

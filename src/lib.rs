@@ -1,4 +1,6 @@
 //! The specjam library
+//!
+//! Current test vector version: 0.6.4
 
 use clap::ValueEnum;
 use colored::{ColoredString, Colorize};
