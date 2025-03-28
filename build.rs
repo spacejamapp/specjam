@@ -2,6 +2,8 @@
 
 use std::{path::PathBuf, process::Command};
 
+mod codegen;
+
 const VECTORS: &str = "JAM_TEST_VECTORS";
 
 fn main() {

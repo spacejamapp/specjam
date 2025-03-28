@@ -18,15 +18,20 @@ tracing = "0.1.41"
 tracing-subscriber = "0.3.19"
 
 [build-dependencies]
-codegen.workspace = true
+anyhow = "1.0.95"
+heck = "0.5.0"
+hex = "0.4.3"
+paste = "1.0.15"
+proc-macro2 = "1.0.92"
+quote = "1.0.38"
+serde_json = "1.0.135"
+syn = { version = "2.0.95", features = ["full"] }
 
 [features]
 default = ["tiny"]
-tiny = ["codegen/tiny"]
-full = ["codegen/full"]
+tiny = []
+full = []
 
-[workspace]
-members = ["codegen"]
 
 [workspace.package]
 version = "0.0.7"
@@ -36,6 +41,3 @@ license = "GPL-3.0"
 documentation = "https://docs.rs/specjam"
 repository = "https://github.com/spacejamapp/specjam"
 homepage = "https://github.com/spacejamapp/specjam"
-
-[workspace.dependencies]
-codegen = { package = "specjam-codegen", path = "codegen", version = "0.0.7" }

@@ -272,17 +272,6 @@ dependencies = [
  "anyhow",
  "clap",
  "colored",
- "serde_json",
- "specjam-codegen",
- "tracing",
- "tracing-subscriber",
-]
-
-[[package]]
-name = "specjam-codegen"
-version = "0.0.7"
-dependencies = [
- "anyhow",
  "heck",
  "hex",
  "paste",
@@ -290,6 +279,8 @@ dependencies = [
  "quote",
  "serde_json",
  "syn",
+ "tracing",
+ "tracing-subscriber",
 ]
 
 [[package]]
