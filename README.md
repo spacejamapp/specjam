@@ -1,6 +1,11 @@
 # Specjam
 
-A tool which can <kbd>spawn</kbd> [binary runner](#binary-runner) to test the JAM spec.
+| STF Version | Commit Hash                                |
+| ----------- | ------------------------------------------ |
+| 0.6.4       | `55b59509b0dba0b04d2a2e4f66b963b0efa1193c` |
+
+A tool which can <kbd>spawn</kbd> [binary runner](#binary-runner) to test the JAM spec, see
+[crates.io/specjam](https://crates.io/crates/specjam) for using it in your project.
 
 ## Usage
 

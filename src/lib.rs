@@ -2,16 +2,13 @@
 //!
 //! Current test vector version: 0.6.4
 
-use clap::ValueEnum;
-use colored::{ColoredString, Colorize};
-use std::fmt::Display;
-pub use {cli::App, runner::Runner, section::Section};
+pub use section::Section;
 
-mod cli;
 /// Registry of the test vectors
 #[allow(clippy::all)]
 #[rustfmt::skip]
 pub mod registry;
+#[cfg(feature = "runner")]
 pub mod runner;
 mod section;
 
@@ -40,7 +37,8 @@ impl Test {
 }
 
 /// The scale of the test vectors
-#[derive(Debug, Clone, Copy, PartialEq, Eq, ValueEnum)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum Scale {
     /// The test vectors are small
     Tiny,
@@ -57,24 +55,30 @@ impl AsRef<str> for Scale {
     }
 }
 
-impl Display for Test {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let mut path: Vec<ColoredString> = vec![];
-        if let Some(scale) = self.scale {
-            path.push(scale.as_ref().to_string().bright_cyan());
-        }
-        path.push(self.section.to_string().bright_purple().bold());
-        path.push(self.name.to_string().blue().bold());
+#[cfg(feature = "runner")]
+mod display {
+    use crate::Test;
+    use colored::{ColoredString, Colorize};
 
-        let len = path.len();
-        let mut msg = String::new();
-        for (i, patt) in path.into_iter().enumerate() {
-            msg.push_str(&format!(
-                "{}{}",
-                patt,
-                if i == len - 1 { "" } else { "::" }.dimmed()
-            ));
+    impl std::fmt::Display for Test {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            let mut path: Vec<ColoredString> = vec![];
+            if let Some(scale) = self.scale {
+                path.push(scale.as_ref().to_string().bright_cyan());
+            }
+            path.push(self.section.to_string().bright_purple().bold());
+            path.push(self.name.to_string().blue().bold());
+
+            let len = path.len();
+            let mut msg = String::new();
+            for (i, patt) in path.into_iter().enumerate() {
+                msg.push_str(&format!(
+                    "{}{}",
+                    patt,
+                    if i == len - 1 { "" } else { "::" }.dimmed()
+                ));
+            }
+            write!(f, "{}", msg)
         }
-        write!(f, "{}", msg)
     }
 }

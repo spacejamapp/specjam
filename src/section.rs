@@ -1,11 +1,11 @@
 //! The section of the test vectors
 
 use crate::{registry, Test};
-use clap::ValueEnum;
 use std::{fmt::Display, str::FromStr};
 
 /// A section of the test vectors
-#[derive(Debug, Clone, Copy, PartialEq, Eq, ValueEnum)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum Section {
     /// The accumulate section
     Accumulate,
