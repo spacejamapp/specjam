@@ -7,7 +7,7 @@ license = "GPL-3.0"
 documentation = "https://docs.rs/specjam"
 repository = "https://github.com/spacejamapp/specjam"
 homepage = "https://github.com/spacejamapp/specjam"
-include = ["src", "README.md", "build.rs"]
+include = ["src", "README.md", "build.rs", "codegen"]
 
 [[bin]]
 name = "specjam"

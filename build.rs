@@ -17,7 +17,7 @@ fn main() {
     }
 
     if !vectors.exists() {
-        println!("cargo:warning=jamtestvectors not found, skipping");
+        println!("cargo:warning=jamtestvectors not found, skipping code generation");
         return;
     }
 
