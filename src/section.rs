@@ -1,12 +1,14 @@
 //! The section of the test vectors
 
 use crate::{registry, Test};
-use clap::ValueEnum;
 use std::{fmt::Display, str::FromStr};
 
 /// A section of the test vectors
-#[derive(Debug, Clone, Copy, PartialEq, Eq, ValueEnum)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum Section {
+    /// The accumulate section
+    Accumulate,
     /// The assurances section
     Assurances,
     /// The codec section
@@ -35,8 +37,9 @@ pub enum Section {
 
 impl Section {
     /// The all sections
-    pub fn all() -> [Section; 12] {
+    pub fn all() -> [Section; 13] {
         [
+            Section::Accumulate,
             Section::Assurances,
             Section::Codec,
             Section::Pvm,
@@ -55,6 +58,7 @@ impl Section {
     /// The tests in the section
     pub fn tests(&self) -> &[Test] {
         match self {
+            Section::Accumulate => &registry::ACCUMULATE,
             Section::Assurances => &registry::ASSURANCES,
             Section::Codec => &registry::CODEC,
             Section::Pvm => &registry::PVM,
@@ -76,6 +80,7 @@ impl FromStr for Section {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
+            "accumulate" => Ok(Section::Accumulate),
             "assurances" => Ok(Section::Assurances),
             "codec" => Ok(Section::Codec),
             "pvm" => Ok(Section::Pvm),
@@ -96,6 +101,7 @@ impl FromStr for Section {
 impl AsRef<str> for Section {
     fn as_ref(&self) -> &str {
         match self {
+            Section::Accumulate => "accumulate",
             Section::Assurances => "assurances",
             Section::Codec => "codec",
             Section::Pvm => "pvm",

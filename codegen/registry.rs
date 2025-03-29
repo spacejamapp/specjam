@@ -1,5 +1,6 @@
 //! test vector registry generator
 
+use crate::codegen::SCALE;
 use anyhow::Result;
 use heck::ToUpperCamelCase;
 use proc_macro2::Span;
@@ -11,7 +12,8 @@ use std::{
 use syn::{parse_quote, Expr, Ident, Item, ItemMod, LitStr};
 
 /// The scale sections which contains both tiny and large test vectors
-const SCALE_SECTIONS: [&str; 6] = [
+const SCALE_SECTIONS: [&str; 7] = [
+    "accumulate",
     "assurances",
     "authorizations",
     "disputes",
@@ -103,7 +105,7 @@ impl<'s> Registry<'s> {
         for section in SCALE_SECTIONS {
             let path = self.root.join(section);
             let mut tests = Vec::new();
-            for scale in crate::SCALE {
+            for scale in SCALE {
                 let path = path.join(scale);
                 let dir = fs::read_dir(&path)?;
                 tests.extend(self.process_base(section, dir, Some(scale.to_string()))?);

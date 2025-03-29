@@ -1,41 +1,44 @@
 [package]
 name = "specjam"
-version.workspace = true
-edition.workspace = true
-description.workspace = true
-license.workspace = true
-documentation.workspace = true
-repository.workspace = true
-homepage.workspace = true
-include = ["src", "head.txt", "README.md", "build.rs"]
-
-[dependencies]
-anyhow = "1.0.95"
-clap = { version = "4.5", features = ["derive"] }
-colored = "3.0.0"
-serde_json = "1.0.135"
-tracing = "0.1.41"
-tracing-subscriber = "0.3.19"
-
-[build-dependencies]
-codegen.workspace = true
-
-[features]
-default = ["tiny"]
-tiny = ["codegen/tiny"]
-full = ["codegen/full"]
-
-[workspace]
-members = ["codegen"]
-
-[workspace.package]
-version = "0.0.7"
+version = "0.0.8"
 edition = "2021"
 description = "A tool spawns binary runner for testing the JAM spec"
 license = "GPL-3.0"
 documentation = "https://docs.rs/specjam"
 repository = "https://github.com/spacejamapp/specjam"
 homepage = "https://github.com/spacejamapp/specjam"
+include = ["src", "README.md", "build.rs", "codegen"]
 
-[workspace.dependencies]
-codegen = { package = "specjam-codegen", version = "0.0.6" }
+[[bin]]
+name = "specjam"
+path = "src/bin/specjam.rs"
+required-features = ["cli"]
+
+[dependencies]
+anyhow = "1.0.95"
+serde_json = "1.0.135"
+
+# Optional dependencies
+clap = { version = "4.5", features = ["derive"], optional = true }
+colored = { version = "3.0.0", optional = true }
+tracing = { version = "0.1.41", optional = true }
+tracing-subscriber = { version = "0.3.19", features = [
+    "env-filter",
+], optional = true }
+
+[build-dependencies]
+anyhow = "1.0.95"
+heck = "0.5.0"
+hex = "0.4.3"
+paste = "1.0.15"
+proc-macro2 = "1.0.92"
+quote = "1.0.38"
+serde_json = "1.0.135"
+syn = { version = "2.0.95", features = ["full"] }
+
+[features]
+default = ["tiny"]
+cli = ["runner", "clap", "tracing-subscriber"]
+runner = ["colored", "tracing"]
+tiny = []
+full = []

@@ -23,7 +23,7 @@ jobs:
         run: git clone https://github.com/spacejamapp/jam-test-vectors --depth=1 jamtestvectors
 
       - name: Build the Binary
-        run: cargo build --release
+        run: cargo build --release --all-features
 
       - name: Format
         run: cargo fmt --check
