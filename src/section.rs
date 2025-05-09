@@ -1,6 +1,5 @@
 //! The section of the test vectors
 
-use crate::{registry, Test};
 use std::{fmt::Display, str::FromStr};
 
 /// A section of the test vectors
@@ -56,26 +55,6 @@ impl Section {
             Section::Trie,
             Section::Trace,
         ]
-    }
-
-    /// The tests in the section
-    pub fn tests(&self) -> &[Test] {
-        match self {
-            Section::Accumulate => &registry::ACCUMULATE,
-            Section::Assurances => &registry::ASSURANCES,
-            Section::Codec => &registry::CODEC,
-            Section::Pvm => &registry::PVM,
-            Section::Safrole => &registry::SAFROLE,
-            Section::Statistics => &registry::STATISTICS,
-            Section::Authorizations => &registry::AUTHORIZATIONS,
-            Section::Disputes => &registry::DISPUTES,
-            Section::History => &registry::HISTORY,
-            Section::Preimages => &registry::PREIMAGES,
-            Section::Reports => &registry::REPORTS,
-            Section::Shuffle => &registry::SHUFFLE,
-            Section::Trace => &registry::TRACE,
-            Section::Trie => &registry::TRIE,
-        }
     }
 }
 

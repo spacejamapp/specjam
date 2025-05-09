@@ -26,16 +26,6 @@ tracing-subscriber = { version = "0.3.19", features = [
     "env-filter",
 ], optional = true }
 
-[build-dependencies]
-anyhow = "1.0.95"
-heck = "0.5.0"
-hex = "0.4.3"
-paste = "1.0.15"
-proc-macro2 = "1.0.92"
-quote = "1.0.38"
-serde_json = "1.0.135"
-syn = { version = "2.0.95", features = ["full"] }
-
 [features]
 default = ["tiny"]
 cli = ["runner", "clap", "tracing-subscriber"]

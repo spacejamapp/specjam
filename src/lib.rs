@@ -3,11 +3,6 @@
 //! Current test vector version: 0.6.4
 
 pub use section::Section;
-
-/// Registry of the test vectors
-#[allow(clippy::all)]
-#[rustfmt::skip]
-pub mod registry;
 #[cfg(feature = "runner")]
 pub mod runner;
 mod section;

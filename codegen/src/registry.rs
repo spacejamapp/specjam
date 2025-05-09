@@ -1,6 +1,6 @@
 //! test vector registry generator
 
-use crate::codegen::SCALE;
+use crate::SCALE;
 use anyhow::Result;
 use heck::ToUpperCamelCase;
 use proc_macro2::Span;
@@ -365,7 +365,7 @@ impl<'s> Registry<'s> {
 
         self.registry.push(parse_quote! {
                 #[doc = #doc]
-                pub const #namespace: [crate::Test; #tests_len] = [#(#tests),*];
+                pub const #namespace: [specjam::Test; #tests_len] = [#(#tests),*];
         });
     }
 }
@@ -420,16 +420,16 @@ where
     let section_caml = Ident::new(&section.to_upper_camel_case(), Span::call_site());
     let scale: Expr = if let Some(scale) = &scale {
         let ident = Ident::new(&scale.to_upper_camel_case(), Span::call_site());
-        parse_quote!(Some(crate::Scale::#ident))
+        parse_quote!(Some(specjam::Scale::#ident))
     } else {
         parse_quote!(None)
     };
 
     tests.push(parse_quote!(
         #[doc = #doc]
-        pub const #const_test: crate::Test = crate::Test {
+        pub const #const_test: specjam::Test = specjam::Test {
             scale: #scale,
-            section: crate::Section::#section_caml,
+            section: specjam::Section::#section_caml,
             name: #test_lower,
             input: #const_input,
             output: #const_output,

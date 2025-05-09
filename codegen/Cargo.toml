@@ -1,0 +1,23 @@
+[package]
+name = "specjam-codegen"
+version = "0.0.9"
+edition = "2021"
+description = "code generation library for specjam"
+license = "GPL-3.0"
+documentation = "https://docs.rs/specjam-codegen"
+repository = "https://github.com/spacejamapp/specjam"
+homepage = "https://github.com/spacejamapp/specjam"
+
+[dependencies]
+anyhow = "1.0.95"
+heck = "0.5.0"
+hex = "0.4.3"
+paste = "1.0.15"
+proc-macro2 = "1.0.92"
+quote = "1.0.38"
+serde_json = "1.0.135"
+syn = { version = "2.0.95", features = ["full"] }
+
+[features]
+default = []
+full = []

@@ -1,3 +1,5 @@
+For generating tests wrapped in rust interfaces, use `specjam-codegen`.
+
 # Specjam
 
 | STF Version | Commit Hash                                |
