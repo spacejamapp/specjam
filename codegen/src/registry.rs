@@ -97,7 +97,7 @@ impl<'s> Registry<'s> {
         let len: Expr = parse_quote!(#len);
         parse_quote! {
             #[doc = "The all test vectors"]
-            pub const ALL_TESTS: [crate::Test; #len] = [#(#tests),*];
+            pub const ALL_TESTS: [specjam::Test; #len] = [#(#tests),*];
         }
     }
 

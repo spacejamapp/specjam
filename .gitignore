@@ -1,3 +1,4 @@
 target
 /jamtestvectors
 /src/registry.rs
+example/registry.rs
