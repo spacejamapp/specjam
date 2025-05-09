@@ -58,6 +58,7 @@ impl<'s> Registry<'s> {
     pub fn run(mut self) -> Result<()> {
         self.scale()?;
         self.general()?;
+        self.trace()?;
         self.codec()?;
         self.pvm()?;
         self.shuffle()?;
@@ -128,6 +129,43 @@ impl<'s> Registry<'s> {
         Ok(())
     }
 
+    /// Generate the trace test vectors
+    fn trace(&mut self) -> Result<()> {
+        let Some((_, tests)) = self.tests.content.as_mut() else {
+            return Err(anyhow::anyhow!("tests already initialized"));
+        };
+
+        let mut trace_tests = Vec::new();
+        for set in ["fallback", "safrole", "reports-l0"] {
+            for entry in fs::read_dir(self.root.join("traces").join(set))? {
+                let path = entry?.path();
+                if path.extension().unwrap_or_default() != "json" {
+                    continue;
+                }
+
+                let test = wrap_test(tests, &None, "trace", &path, Some(set), |json| {
+                    let input = serde_json::json!({
+                        "block": json["block"],
+                        "pre_state": json["pre_state"],
+                    })
+                    .to_string();
+
+                    let output = serde_json::json!({
+                        "post_state": json["post_state"],
+                    })
+                    .to_string();
+
+                    Ok((input, output))
+                })?;
+
+                trace_tests.push(test);
+            }
+        }
+
+        self.embed_namespace("trace", trace_tests);
+        Ok(())
+    }
+
     /// Generate the codec test vectors
     fn codec(&mut self) -> Result<()> {
         let Some((_, tests)) = self.tests.content.as_mut() else {
@@ -143,7 +181,7 @@ impl<'s> Registry<'s> {
 
             let bin = hex::encode(fs::read(path.with_extension("bin"))?);
             let parse = move |json: Value| Ok((json.to_string(), bin));
-            let test = wrap_test(tests, &None, "codec", &path, parse)?;
+            let test = wrap_test(tests, &None, "codec", &path, None, parse)?;
             const_tests.push(test);
         }
 
@@ -162,7 +200,7 @@ impl<'s> Registry<'s> {
         let mut const_tests = Vec::new();
         for entry in dir {
             let path = entry?.path();
-            let test = self::wrap_test(tests, &None, section, &path, |json| {
+            let test = self::wrap_test(tests, &None, section, &path, None, |json| {
                 let input = serde_json::json!({
                     "name": json["name"],
                     "initial-regs": json["pre-state"],
@@ -207,6 +245,7 @@ impl<'s> Registry<'s> {
             &None,
             "trie",
             &file,
+            None,
             |json| -> Result<(String, String)> {
                 let vectors = json
                     .as_array()
@@ -246,6 +285,7 @@ impl<'s> Registry<'s> {
             &None,
             "shuffle",
             &file,
+            None,
             |json| -> Result<(String, String)> {
                 let vectors = json
                     .as_array()
@@ -291,7 +331,7 @@ impl<'s> Registry<'s> {
                 continue;
             }
 
-            let test = self::wrap_test(tests, &scale, section, &path, |json| {
+            let test = self::wrap_test(tests, &scale, section, &path, None, |json| {
                 let input = serde_json::json!({
                     "input": json["input"],
                     "pre_state": json["pre_state"],
@@ -335,6 +375,7 @@ fn wrap_test<P>(
     scale: &Option<String>,
     section: &str,
     file: &Path,
+    prefix: Option<&str>,
     parse: P,
 ) -> Result<syn::Path>
 where
@@ -346,7 +387,11 @@ where
         .file_name()
         .ok_or_else(|| anyhow::anyhow!("invalid file name"))?
         .to_string_lossy()
-        .replace('-', "_");
+        .to_string();
+    if let Some(prefix) = prefix {
+        test = format!("{prefix}_{test}");
+    }
+    test = test.replace('-', "_");
 
     let doc = LitStr::new(
         &format!("test vector {test} for {section}"),

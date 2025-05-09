@@ -11,33 +11,35 @@ pub enum Section {
     Accumulate,
     /// The assurances section
     Assurances,
-    /// The codec section
-    Codec,
-    /// The pvm section
-    Pvm,
-    /// The safrole section
-    Safrole,
-    /// The statistics section
-    Statistics,
     /// The authorizations section
     Authorizations,
+    /// The codec section
+    Codec,
     /// The disputes section
     Disputes,
     /// The history section
     History,
     /// The preimages section
     Preimages,
+    /// The pvm section
+    Pvm,
     /// The reports section
     Reports,
+    /// The safrole section
+    Safrole,
+    /// The statistics section
+    Statistics,
     /// The shuffle section
     Shuffle,
+    /// State trace section
+    Trace,
     /// The trie section
     Trie,
 }
 
 impl Section {
     /// The all sections
-    pub fn all() -> [Section; 13] {
+    pub fn all() -> [Section; 14] {
         [
             Section::Accumulate,
             Section::Assurances,
@@ -52,6 +54,7 @@ impl Section {
             Section::Reports,
             Section::Shuffle,
             Section::Trie,
+            Section::Trace,
         ]
     }
 
@@ -70,6 +73,7 @@ impl Section {
             Section::Preimages => &registry::PREIMAGES,
             Section::Reports => &registry::REPORTS,
             Section::Shuffle => &registry::SHUFFLE,
+            Section::Trace => &registry::TRACE,
             Section::Trie => &registry::TRIE,
         }
     }
@@ -92,6 +96,7 @@ impl FromStr for Section {
             "preimages" => Ok(Section::Preimages),
             "reports" => Ok(Section::Reports),
             "shuffle" => Ok(Section::Shuffle),
+            "trace" => Ok(Section::Trace),
             "trie" => Ok(Section::Trie),
             _ => Err(anyhow::anyhow!("Invalid section {s}")),
         }
@@ -113,6 +118,7 @@ impl AsRef<str> for Section {
             Section::Preimages => "preimages",
             Section::Reports => "reports",
             Section::Shuffle => "shuffle",
+            Section::Trace => "trace",
             Section::Trie => "trie",
         }
     }
