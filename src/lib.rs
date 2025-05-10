@@ -3,6 +3,7 @@
 //! Current test vector version: 0.6.4
 
 pub use section::Section;
+mod registry;
 #[cfg(feature = "runner")]
 pub mod runner;
 mod section;
