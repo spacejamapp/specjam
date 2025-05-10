@@ -9,28 +9,7 @@ repository = "https://github.com/spacejamapp/specjam"
 homepage = "https://github.com/spacejamapp/specjam"
 include = ["src", "README.md", "build.rs", "codegen"]
 
-[[bin]]
-name = "specjam"
-path = "src/bin/specjam.rs"
-required-features = ["cli"]
-
 [dependencies]
 anyhow = "1.0.95"
 hex = "0.4.3"
 serde_json = "1.0.135"
-
-
-# Optional dependencies
-clap = { version = "4.5", features = ["derive"], optional = true }
-colored = { version = "3.0.0", optional = true }
-tracing = { version = "0.1.41", optional = true }
-tracing-subscriber = { version = "0.3.19", features = [
-    "env-filter",
-], optional = true }
-
-[features]
-default = ["tiny"]
-cli = ["runner", "clap", "tracing-subscriber"]
-runner = ["colored", "tracing"]
-tiny = []
-full = []

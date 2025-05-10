@@ -1,6 +1,6 @@
 //! Test vector registry entry
 
-use crate::{section::Trace, Scale, Section, Test};
+use crate::{Scale, Section, Test};
 use anyhow::Result;
 use serde_json::Value;
 use std::{
@@ -26,10 +26,30 @@ pub struct Entry {
 impl Entry {
     /// Create a new test vector registry entry
     pub fn new(section: Section, scale: Option<Scale>, stf: &Path) -> Result<Self> {
+        let dir = {
+            if let Some(scale) = scale {
+                stf.join(section.as_ref()).join(scale.as_ref())
+            } else {
+                stf.join(section.as_ref())
+            }
+        };
+
+        if !dir.exists() {
+            return Err(anyhow::anyhow!("directory does not exist"));
+        }
+
+        let mut files = Vec::new();
+        for entry in fs::read_dir(stf)? {
+            let path = entry?.path();
+            if path.is_file() && path.extension().unwrap_or_default() == "json" {
+                files.push(path);
+            }
+        }
+
         Ok(Self {
             section,
             scale,
-            files: Vec::new(),
+            files,
             current: 0,
         })
     }
@@ -223,6 +243,12 @@ impl Iterator for Entry {
     type Item = Test;
 
     fn next(&mut self) -> Option<Self::Item> {
-        None
+        let Some(path) = self.files.get(self.current) else {
+            return None;
+        };
+
+        let test = self.parse(path).ok()?;
+        self.current += 1;
+        Some(test)
     }
 }

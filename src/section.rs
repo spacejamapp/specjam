@@ -4,7 +4,6 @@ use std::{fmt::Display, str::FromStr};
 
 /// A section of the test vectors
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum Section {
     /// The accumulate section
     Accumulate,
@@ -42,11 +41,11 @@ impl Section {
         [
             Section::Accumulate,
             Section::Assurances,
+            Section::Authorizations,
             Section::Codec,
             Section::Pvm,
             Section::Safrole,
             Section::Statistics,
-            Section::Authorizations,
             Section::Disputes,
             Section::History,
             Section::Preimages,

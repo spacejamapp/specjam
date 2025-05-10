@@ -3,11 +3,9 @@
 //! Current test vector version: 0.6.4
 
 pub use registry::{Entry, Registry};
-pub use section::Section;
+pub use section::{Section, Trace};
 
 mod registry;
-#[cfg(feature = "runner")]
-pub mod runner;
 mod section;
 
 /// A general test vector
@@ -36,7 +34,6 @@ impl Test {
 
 /// The scale of the test vectors
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[cfg_attr(feature = "cli", derive(clap::ValueEnum))]
 pub enum Scale {
     /// The test vectors are small
     Tiny,
@@ -49,34 +46,6 @@ impl AsRef<str> for Scale {
         match self {
             Scale::Tiny => "tiny",
             Scale::Full => "full",
-        }
-    }
-}
-
-#[cfg(feature = "runner")]
-mod display {
-    use crate::Test;
-    use colored::{ColoredString, Colorize};
-
-    impl std::fmt::Display for Test {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            let mut path: Vec<ColoredString> = vec![];
-            if let Some(scale) = self.scale {
-                path.push(scale.as_ref().to_string().bright_cyan());
-            }
-            path.push(self.section.to_string().bright_purple().bold());
-            path.push(self.name.to_string().blue().bold());
-
-            let len = path.len();
-            let mut msg = String::new();
-            for (i, patt) in path.into_iter().enumerate() {
-                msg.push_str(&format!(
-                    "{}{}",
-                    patt,
-                    if i == len - 1 { "" } else { "::" }.dimmed()
-                ));
-            }
-            write!(f, "{}", msg)
         }
     }
 }

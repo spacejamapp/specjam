@@ -1,5 +1,7 @@
 //! test vector registry
 
+use crate::{section::Trace, Section};
+use anyhow::Result;
 pub use entry::Entry;
 use std::path::PathBuf;
 
@@ -15,5 +17,89 @@ impl Registry {
     /// Create a new registry from the given jam-test-vectors directory
     pub fn new(root: PathBuf) -> Self {
         Self { root }
+    }
+
+    /// Get the accumulate test vectors
+    pub fn accumulate(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Accumulate, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the assurances test vectors
+    pub fn assurances(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Assurances, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the authorizations test vectors
+    pub fn authorizations(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Authorizations, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the codec test vectors
+    pub fn codec(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Codec, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the disputes test vectors
+    pub fn disputes(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Disputes, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the history test vectors
+    pub fn history(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::History, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the preimages test vectors
+    pub fn preimages(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Preimages, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the pvm test vectors
+    pub fn pvm(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Pvm, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the reports test vectors
+    pub fn reports(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Reports, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the safrole test vectors
+    pub fn safrole(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Safrole, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the statistics test vectors
+    pub fn statistics(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Statistics, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the shuffle test vectors
+    pub fn shuffle(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Shuffle, None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the trace test vectors
+    pub fn trace(&self, trace: Trace) -> Result<Entry> {
+        let entry = Entry::new(Section::Trace(trace), None, &self.root)?;
+        Ok(entry)
+    }
+
+    /// Get the trie test vectors
+    pub fn trie(&self) -> Result<Entry> {
+        let entry = Entry::new(Section::Trie, None, &self.root)?;
+        Ok(entry)
     }
 }
