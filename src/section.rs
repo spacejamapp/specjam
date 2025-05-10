@@ -31,14 +31,14 @@ pub enum Section {
     /// The shuffle section
     Shuffle,
     /// State trace section
-    Trace,
+    Trace(Trace),
     /// The trie section
     Trie,
 }
 
 impl Section {
     /// The all sections
-    pub fn all() -> [Section; 14] {
+    pub fn all() -> [Section; 16] {
         [
             Section::Accumulate,
             Section::Assurances,
@@ -53,7 +53,9 @@ impl Section {
             Section::Reports,
             Section::Shuffle,
             Section::Trie,
-            Section::Trace,
+            Section::Trace(Trace::Fallback),
+            Section::Trace(Trace::Safrole),
+            Section::Trace(Trace::ReportsL0),
         ]
     }
 }
@@ -75,7 +77,9 @@ impl FromStr for Section {
             "preimages" => Ok(Section::Preimages),
             "reports" => Ok(Section::Reports),
             "shuffle" => Ok(Section::Shuffle),
-            "trace" => Ok(Section::Trace),
+            "traces/fallback" => Ok(Section::Trace(Trace::Fallback)),
+            "traces/safrole" => Ok(Section::Trace(Trace::Safrole)),
+            "traces/reports-l0" => Ok(Section::Trace(Trace::ReportsL0)),
             "trie" => Ok(Section::Trie),
             _ => Err(anyhow::anyhow!("Invalid section {s}")),
         }
@@ -97,7 +101,11 @@ impl AsRef<str> for Section {
             Section::Preimages => "preimages",
             Section::Reports => "reports",
             Section::Shuffle => "shuffle",
-            Section::Trace => "trace",
+            Section::Trace(trace) => match trace {
+                Trace::Fallback => "traces/fallback",
+                Trace::Safrole => "traces/safrole",
+                Trace::ReportsL0 => "traces/reports-l0",
+            },
             Section::Trie => "trie",
         }
     }
@@ -106,5 +114,26 @@ impl AsRef<str> for Section {
 impl Display for Section {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.as_ref())
+    }
+}
+
+/// The traces section
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Trace {
+    /// The fallback traces
+    Fallback,
+    /// The safrole traces
+    Safrole,
+    /// The reports traces
+    ReportsL0,
+}
+
+impl AsRef<str> for Trace {
+    fn as_ref(&self) -> &str {
+        match self {
+            Trace::Fallback => "fallback",
+            Trace::Safrole => "safrole",
+            Trace::ReportsL0 => "reports-l0",
+        }
     }
 }

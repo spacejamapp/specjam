@@ -2,7 +2,9 @@
 //!
 //! Current test vector version: 0.6.4
 
+pub use registry::{Entry, Registry};
 pub use section::Section;
+
 mod registry;
 #[cfg(feature = "runner")]
 pub mod runner;
@@ -11,18 +13,18 @@ mod section;
 /// A general test vector
 ///
 /// This is the main struct that represents a test vector
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Test {
     /// The scale of the test vectors
     pub scale: Option<Scale>,
     /// The section of the test vectors
     pub section: Section,
     /// The name of the test vector
-    pub name: &'static str,
+    pub name: String,
     /// The input of the test vectors
-    pub input: &'static str,
+    pub input: String,
     /// The output of the test vectors
-    pub output: &'static str,
+    pub output: String,
 }
 
 impl Test {

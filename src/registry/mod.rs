@@ -1,5 +1,6 @@
 //! test vector registry
 
+pub use entry::Entry;
 use std::path::PathBuf;
 
 mod entry;

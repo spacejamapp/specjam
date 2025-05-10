@@ -16,7 +16,9 @@ required-features = ["cli"]
 
 [dependencies]
 anyhow = "1.0.95"
+hex = "0.4.3"
 serde_json = "1.0.135"
+
 
 # Optional dependencies
 clap = { version = "4.5", features = ["derive"], optional = true }
