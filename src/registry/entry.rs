@@ -54,6 +54,20 @@ impl Entry {
         })
     }
 
+    /// Get the number of test vectors
+    pub fn count(&self) -> usize {
+        self.files.len()
+    }
+
+    /// Get a test vector by index
+    pub fn get(&self, index: usize) -> Result<Test> {
+        let path = self
+            .files
+            .get(index)
+            .ok_or_else(|| anyhow::anyhow!("index out of bounds"))?;
+        self.parse(path)
+    }
+
     /// Parse a test vector from a file
     pub fn parse(&self, path: &PathBuf) -> Result<Test> {
         match self.section {

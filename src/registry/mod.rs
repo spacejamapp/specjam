@@ -1,6 +1,6 @@
 //! test vector registry
 
-use crate::{section::Trace, Section};
+use crate::{section::Trace, Scale, Section};
 use anyhow::Result;
 pub use entry::Entry;
 use std::path::PathBuf;
@@ -20,20 +20,20 @@ impl Registry {
     }
 
     /// Get the accumulate test vectors
-    pub fn accumulate(&self) -> Result<Entry> {
-        let entry = Entry::new(Section::Accumulate, None, &self.root)?;
+    pub fn accumulate(&self, scale: Scale) -> Result<Entry> {
+        let entry = Entry::new(Section::Accumulate, Some(scale), &self.root)?;
         Ok(entry)
     }
 
     /// Get the assurances test vectors
-    pub fn assurances(&self) -> Result<Entry> {
-        let entry = Entry::new(Section::Assurances, None, &self.root)?;
+    pub fn assurances(&self, scale: Scale) -> Result<Entry> {
+        let entry = Entry::new(Section::Assurances, Some(scale), &self.root)?;
         Ok(entry)
     }
 
     /// Get the authorizations test vectors
-    pub fn authorizations(&self) -> Result<Entry> {
-        let entry = Entry::new(Section::Authorizations, None, &self.root)?;
+    pub fn authorizations(&self, scale: Scale) -> Result<Entry> {
+        let entry = Entry::new(Section::Authorizations, Some(scale), &self.root)?;
         Ok(entry)
     }
 
@@ -44,8 +44,8 @@ impl Registry {
     }
 
     /// Get the disputes test vectors
-    pub fn disputes(&self) -> Result<Entry> {
-        let entry = Entry::new(Section::Disputes, None, &self.root)?;
+    pub fn disputes(&self, scale: Scale) -> Result<Entry> {
+        let entry = Entry::new(Section::Disputes, Some(scale), &self.root)?;
         Ok(entry)
     }
 
@@ -68,20 +68,20 @@ impl Registry {
     }
 
     /// Get the reports test vectors
-    pub fn reports(&self) -> Result<Entry> {
-        let entry = Entry::new(Section::Reports, None, &self.root)?;
+    pub fn reports(&self, scale: Scale) -> Result<Entry> {
+        let entry = Entry::new(Section::Reports, Some(scale), &self.root)?;
         Ok(entry)
     }
 
     /// Get the safrole test vectors
-    pub fn safrole(&self) -> Result<Entry> {
-        let entry = Entry::new(Section::Safrole, None, &self.root)?;
+    pub fn safrole(&self, scale: Scale) -> Result<Entry> {
+        let entry = Entry::new(Section::Safrole, Some(scale), &self.root)?;
         Ok(entry)
     }
 
     /// Get the statistics test vectors
-    pub fn statistics(&self) -> Result<Entry> {
-        let entry = Entry::new(Section::Statistics, None, &self.root)?;
+    pub fn statistics(&self, scale: Scale) -> Result<Entry> {
+        let entry = Entry::new(Section::Statistics, Some(scale), &self.root)?;
         Ok(entry)
     }
 

@@ -90,14 +90,14 @@ impl AsRef<str> for Section {
         match self {
             Section::Accumulate => "accumulate",
             Section::Assurances => "assurances",
-            Section::Codec => "codec",
-            Section::Pvm => "pvm",
+            Section::Codec => "codec/data",
+            Section::Pvm => "pvm/programs",
             Section::Safrole => "safrole",
             Section::Statistics => "statistics",
             Section::Authorizations => "authorizations",
             Section::Disputes => "disputes",
-            Section::History => "history",
-            Section::Preimages => "preimages",
+            Section::History => "history/data",
+            Section::Preimages => "preimages/data",
             Section::Reports => "reports",
             Section::Shuffle => "shuffle",
             Section::Trace(trace) => match trace {
