@@ -15,8 +15,38 @@ pub struct Registry {
 
 impl Registry {
     /// Create a new registry from the given jam-test-vectors directory
-    pub fn new(root: PathBuf) -> Self {
+    pub fn new(root: impl Into<PathBuf>) -> Self {
+        let root = root.into();
+        if !root.exists() {
+            panic!(
+                "jam-test-vectors directory does not exist: {}",
+                root.display()
+            );
+        }
         Self { root }
+    }
+
+    /// Get an entry from the registry
+    pub fn entry(&self, section: &str) -> Result<Entry> {
+        match section {
+            "accumulate" => self.accumulate(Scale::Tiny),
+            "assurances" => self.assurances(Scale::Tiny),
+            "authorizations" => self.authorizations(Scale::Tiny),
+            "codec" => self.codec(),
+            "disputes" => self.disputes(Scale::Tiny),
+            "history/data" => self.history(),
+            "preimages/data" => self.preimages(),
+            "pvm/programs" => self.pvm(),
+            "reports" => self.reports(Scale::Tiny),
+            "safrole" => self.safrole(Scale::Tiny),
+            "statistics" => self.statistics(Scale::Tiny),
+            "shuffle" => self.shuffle(),
+            "trace/fallback" => self.trace(Trace::Fallback),
+            "trace/safrole" => self.trace(Trace::Safrole),
+            "trace/reports-l0" => self.trace(Trace::ReportsL0),
+            "trie" => self.trie(),
+            _ => Err(anyhow::anyhow!("invalid section: {}", section)),
+        }
     }
 
     /// Get the accumulate test vectors

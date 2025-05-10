@@ -11,7 +11,7 @@ use std::{
 /// A test vector registry entry
 pub struct Entry {
     /// The section of the test vector
-    section: Section,
+    pub section: Section,
 
     /// The scale of the test vector
     scale: Option<Scale>,
@@ -39,7 +39,7 @@ impl Entry {
         }
 
         let mut files = Vec::new();
-        for entry in fs::read_dir(stf)? {
+        for entry in fs::read_dir(dir)? {
             let path = entry?.path();
             if path.is_file() && path.extension().unwrap_or_default() == "json" {
                 files.push(path);
@@ -68,6 +68,22 @@ impl Entry {
         self.parse(path)
     }
 
+    /// Get a test vector by name
+    pub fn test(&self, name: &str) -> Result<Test> {
+        let path = self
+            .files
+            .iter()
+            .find(|path| {
+                path.file_name()
+                    .unwrap_or_default()
+                    .to_str()
+                    .unwrap_or_default()
+                    .contains(name)
+            })
+            .ok_or_else(|| anyhow::anyhow!("test not found"))?;
+        self.parse(path)
+    }
+
     /// Parse a test vector from a file
     pub fn parse(&self, path: &PathBuf) -> Result<Test> {
         match self.section {
@@ -91,17 +107,8 @@ impl Entry {
     /// Parse a codec test vector from a file
     fn parse_codec(&self, path: &PathBuf) -> Result<Test> {
         let name = Self::file_name(path)?;
-        let input = hex::encode(fs::read(path.with_extension("bin"))?);
-        let output = fs::read_to_string(path)?;
-        let input = serde_json::json!({
-            "input": input,
-        })
-        .to_string();
-
-        let output = serde_json::json!({
-            "output": output,
-        })
-        .to_string();
+        let input = fs::read_to_string(path)?;
+        let output = hex::encode(fs::read(path.with_extension("bin"))?);
 
         Ok(Test {
             input,
@@ -200,19 +207,24 @@ impl Entry {
     fn parse_trie(&self, path: &PathBuf) -> Result<Test> {
         let name = Self::file_name(path)?;
         let json: Value = serde_json::from_slice(&fs::read(path)?)?;
-        let input = serde_json::json!({
-            "input": json["input"],
-        })
-        .to_string();
+        let vectors = json
+            .as_array()
+            .ok_or_else(|| anyhow::anyhow!("invalid trie test"))?;
 
-        let output = serde_json::json!({
-            "output": json["output"],
-        })
-        .to_string();
+        let mut input = Vec::new();
+        let mut output = Vec::new();
+        for vector in vectors {
+            input.push(serde_json::json!({
+                "input": vector["input"],
+            }));
+            output.push(serde_json::json!({
+                "output": vector["output"],
+            }));
+        }
 
         Ok(Test {
-            input,
-            output,
+            input: serde_json::to_string(&input)?,
+            output: serde_json::to_string(&output)?,
             scale: self.scale,
             section: self.section,
             name,
@@ -222,20 +234,26 @@ impl Entry {
     fn parse_shuffle(&self, path: &PathBuf) -> Result<Test> {
         let name = Self::file_name(path)?;
         let json: Value = serde_json::from_slice(&fs::read(path)?)?;
-        let input = serde_json::json!({
-            "input": json["input"],
-            "entropy": json["entropy"],
-        })
-        .to_string();
 
-        let output = serde_json::json!({
-            "output": json["output"],
-        })
-        .to_string();
+        let vectors = json
+            .as_array()
+            .ok_or_else(|| anyhow::anyhow!("invalid shuffle test"))?;
+
+        let mut input = Vec::new();
+        let mut output = Vec::new();
+        for vector in vectors {
+            input.push(serde_json::json!({
+                "input": vector["input"],
+                "entropy": vector["entropy"],
+            }));
+            output.push(serde_json::json!({
+                "output": vector["output"],
+            }));
+        }
 
         Ok(Test {
-            input,
-            output,
+            input: serde_json::to_string(&input)?,
+            output: serde_json::to_string(&output)?,
             scale: self.scale,
             section: self.section,
             name,
