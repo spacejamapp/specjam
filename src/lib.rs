@@ -1,6 +1,5 @@
 //! The specjam library
-//!
-//! Current test vector version: 0.6.4
+#![doc = include_str!("../README.md")]
 
 pub use registry::{Entry, Registry};
 pub use section::{Section, Trace};
