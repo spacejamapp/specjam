@@ -275,10 +275,7 @@ impl Iterator for Entry {
     type Item = Test;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let Some(path) = self.files.get(self.current) else {
-            return None;
-        };
-
+        let path = self.files.get(self.current)?;
         let test = self.parse(path).ok()?;
         self.current += 1;
         Some(test)
