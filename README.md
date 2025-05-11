@@ -1,3 +1,6 @@
+Archived, while PolkaJam provides its own testing framework, this repo is
+no longer needed and will be embedded into the Spacejam repo.
+
 # Specjam
 
 jam-test-vectors rust wrapper.
