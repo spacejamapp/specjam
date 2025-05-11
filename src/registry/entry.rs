@@ -74,11 +74,12 @@ impl Entry {
             .files
             .iter()
             .find(|path| {
+                let path = path.with_extension("");
                 path.file_name()
                     .unwrap_or_default()
                     .to_str()
                     .unwrap_or_default()
-                    .contains(name)
+                    == name
             })
             .ok_or_else(|| anyhow::anyhow!("test not found"))?;
         self.parse(path)
