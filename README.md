@@ -1,15 +1,15 @@
-_NOTE: The previous testing toolkit in this repo is now archived since now polkajam provides the tracing tests, you can find it in the history commits if needed._
-
 ## Spacejam Releases
+
+> _NOTE: The previous testing toolkit in this repo is now archived since now polkajam provides the tracing tests, you can find it in the history commits if needed._
 
 You can find the releases of `spacejam` in the [releases](https://github.com/polkajam/spacejam/releases) page.
 
 ### Spacejam Testnet
 
 There is also a `testnet` binary provided in the releases, which is a testnet manager developed by spacejam.
-You can find the template config at [testnet.toml](./testnet.toml).
+Check out the template config at [testnet.toml](./testnet.toml).
 
-```bash
+```
 $ testnet --help
 The command line interface for testnet
 
