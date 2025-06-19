@@ -1,0 +1,59 @@
+[network]
+spec = "crates/spacejam/spec/dev/spec.json"
+filter = []                                 # filter patterns from the logs globally
+watch = ["polkajam-0"]                      # filter the logs of input nodes only
+
+[node.polkajam-0]
+command = "polkajam"
+arch = "polkajam"
+data = "res/testnet/0"
+quic = "0.0.0.0:40000"
+rpc = "0.0.0.0:19800"
+seed = "0"
+env = { RUST_LOG = "jam_node=trace" }
+
+[node.polkajam-1]
+command = "polkajam"
+arch = "polkajam"
+data = "testnet/1"
+quic = "0.0.0.0:40001"
+rpc = "0.0.0.0:19801"
+seed = "1"
+env = { RUST_LOG = "jam_node=trace" }
+
+[node.polkajam-2]
+command = "polkajam"
+arch = "polkajam"
+data = "testnet/2"
+quic = "0.0.0.0:40002"
+rpc = "0.0.0.0:19802"
+seed = "2"
+env = { RUST_LOG = "jam_node=trace" }
+
+[node.polkajam-3]
+command = "polkajam"
+arch = "polkajam"
+data = "testnet/3"
+quic = "0.0.0.0:40003"
+rpc = "0.0.0.0:19803"
+seed = "3"
+env = { RUST_LOG = "jam_node=trace" }
+
+[node.polkajam-4]
+command = "polkajam"
+arch = "polkajam"
+data = "testnet/4"
+quic = "0.0.0.0:40004"
+rpc = "0.0.0.0:19804"
+seed = "4"
+env = { RUST_LOG = "jam_node=trace" }
+
+[node.spacejam]
+command = "spacejam"
+arch = "spacejam"
+data = "testnet/5"
+quic = "0.0.0.0:40005"
+rpc = "0.0.0.0:19805"
+seed = "5"
+env = { RUST_LOG = "spacejam,runtime=trace" }
+args = ["-vv"]
