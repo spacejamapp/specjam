@@ -2,7 +2,8 @@
 
 > _NOTE: The previous testing toolkit in this repo is now archived since now polkajam provides the tracing tests, you can find it in the history commits if needed._
 
-You can find the releases of `spacejam` in the [releases](https://github.com/polkajam/spacejam/releases) page.
+- You can find the releases of `spacejam` in the [releases](https://github.com/polkajam/spacejam/releases) page.
+- You can find the guide of using `spacejam` as a fuzz target in [FUZZ.md](./FUZZ.md).
 
 ### Spacejam Testnet
 
