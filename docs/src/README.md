@@ -1,6 +1,6 @@
 # Intro
 
-Handbook for [Spacejam](https://spacejam.app)
+Handbook for [Spacejam](https://spacejam.app), see [Releases](https://github.com/spacejamapp/specjam/releases) for the latest binaries.
 
 ## Getting Started
 
