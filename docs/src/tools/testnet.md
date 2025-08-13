@@ -1,0 +1,82 @@
+# testnet
+
+```bash
+$ testnet -h
+The command line interface for testnet
+
+Usage: testnet [OPTIONS] <COMMAND>
+
+Commands:
+  generate  Generate a new testnet configuration file
+  prune     Prune the testnet
+  start     Start the testnet
+  help      Print this message or the help of the given subcommand(s)
+
+Options:
+  -c, --config <CONFIG>  The path to the testnet configuration file
+  -n, --noansi           Whether to use ANSI colors in the output
+  -h, --help             Print help
+```
+
+## Config
+
+```toml
+[network]
+spec = "crates/spacejam/spec/dev/spec.json"
+filter = []
+watch = []
+
+[node.polkajam-0]
+command = "polkajam"
+arch = "polkajam"
+data = "res/testnet/0"
+quic = "0.0.0.0:40000"
+rpc = "0.0.0.0:19800"
+seed = "0"
+env = { RUST_LOG = "jam_node=warn" }
+
+[node.polkajam-1]
+command = "polkajam"
+arch = "polkajam"
+data = "res/testnet/1"
+quic = "0.0.0.0:40001"
+rpc = "0.0.0.0:19801"
+seed = "1"
+env = { RUST_LOG = "jam_node=warn" }
+
+[node.polkajam-2]
+command = "polkajam"
+arch = "polkajam"
+data = "res/testnet/2"
+quic = "0.0.0.0:40002"
+rpc = "0.0.0.0:19802"
+seed = "2"
+env = { RUST_LOG = "jam_node=trace" }
+
+[node.polkajam-3]
+command = "polkajam"
+arch = "polkajam"
+data = "res/testnet/3"
+quic = "0.0.0.0:40003"
+rpc = "0.0.0.0:19803"
+seed = "3"
+env = { RUST_LOG = "jam_node=warn" }
+
+[node.polkajam-4]
+command = "polkajam"
+arch = "polkajam"
+data = "res/testnet/4"
+quic = "0.0.0.0:40004"
+rpc = "0.0.0.0:19804"
+seed = "4"
+env = { RUST_LOG = "jam_node=warn" }
+
+[node.spacejam]
+command = "target/release/spacejam"
+arch = "spacejam"
+data = "res/testnet/5"
+quic = "0.0.0.0:40005"
+rpc = "0.0.0.0:19805"
+seed = "5"
+env = { RUST_LOG = "spacejam,runtime,network=trace" }
+```
